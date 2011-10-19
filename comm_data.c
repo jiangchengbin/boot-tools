@@ -34,6 +34,7 @@ struct FILE_TYPE F_Tab[]={
     {0x82,"Linux swap / Solaris"},
     {0x83,"Linux"},
     {0x0B,"FAT32"}
+    {0xEE,"GPT"}
 };
 
 /*  open the device file for read date  */
