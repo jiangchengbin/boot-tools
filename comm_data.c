@@ -19,8 +19,8 @@
 
 /* initialization value  */
 long EXTEND_POSITION=0;
-char Read_File[]="/dev/sda";
-char Save_File[]="grub_mbr";
+char Read_File[50]="/dev/sda";
+char Save_File[50]="grub_mbr";
 
 /* only used by me */
 char tmp_data[50];
