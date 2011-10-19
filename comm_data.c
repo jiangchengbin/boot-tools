@@ -33,7 +33,7 @@ struct FILE_TYPE F_Tab[]={
     {0x0F,"Extended"},
     {0x82,"Linux swap / Solaris"},
     {0x83,"Linux"},
-    {0x0B,"FAT32"}
+    {0x0B,"FAT32"},
     {0xEE,"GPT"}
 };
 
