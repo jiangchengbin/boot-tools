@@ -14,18 +14,21 @@
 
 #include "ourhead.h"
 
-void Read_Next_PT_Ex(char *data)
+int Read_Next_PT_Ex(char *data)
 {
 	struct PCT pt;
 	memcpy(&pt,data,sizeof(struct PCT));
 	
 	char *result=Read_DBR(pt);
-	memcpy(data,result+DPT_OFFSET/*446*/,64);	
-	
+	memcpy(data,result+DPT_OFFSET/*446*/,64);
+
 #ifdef DEBUG	
 	printf("Read S DPT data\n");
 	print_date(data,64);
 #endif
+
+	if ( result[0] == 0 && result[1] == 0 && result[2] == 0) return 0;
+	else return -1;
 }
 
 /*	find next PCT from a DPT data */
@@ -53,12 +56,18 @@ struct DPT *Read_Next_PT(char *data)
 			return result;
 		case 0x05:
 		case 0x0f:
-			Read_Next_PT_Ex(data);
-			struct DPT *now=malloc(sizeof(struct DPT));
-			(*now).pt=Read_PT(data);
-			(*now).next=Read_Next_PT(data);
-			(*result).next=now;
-			return result;
+			if (Read_Next_PT_Ex(data) == 0 )
+			{
+				struct DPT *now=malloc(sizeof(struct DPT));
+				(*now).pt=Read_PT(data);
+				(*now).next=Read_Next_PT(data);
+				(*result).next=now;
+				return result;
+			}
+			else
+			{
+				return result;
+			}
 	}
 	return NULL;
 }

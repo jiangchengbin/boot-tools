@@ -102,7 +102,7 @@ void print_date(unsigned char *data,int len)
 	l=len / 16;
 	for (j=0;j<l;++j)
 	{
-		printf("%08X ",(unsigned char)j);
+		printf("%07X: ",(unsigned char)j);
 		for ( i=0;i<16;++i)
 		{
 			printf("%02X ",data[i+j*16]);

@@ -12,7 +12,7 @@
 #define __DBR_READER_H__JOE
 
 extern struct DPT *Read_Next_PT(char *data);
-extern void Read_Next_PCT_Ex(char *data);
+extern int Read_Next_PCT_Ex(char *data);
 extern struct DPT Read_DPT();
 
 #endif
