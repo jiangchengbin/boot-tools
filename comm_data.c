@@ -53,8 +53,30 @@ long File_Len()
 	return filesize;
 }
 
+/* fix same machine can't seek position */
+void seek(FILE *fp,long long position)
+{
+	if ( sizeof(long ) > 4 ) fseek(fp,position,SEEK_SET);
+	else
+	{
+		fseek(fp,0,SEEK_SET);
+		long bsd=256*256*256*64;
+		long count=position / bsd;
+		long remain=position % bsd;
+#ifdef DEBUG
+		printf("used seek pos=%lld\n",position);
+		printf("used seek bsd=%ld,count=%ld\n",bsd,count);
+#endif
+		while ( count-- )
+		{
+			fseek(fp,bsd,SEEK_CUR);
+		}
+		fseek(fp,remain,SEEK_CUR);
+	}
+}
+
 /* open the device file for read date */
-char *Read_Data(long position,long count)
+char *Read_Data(long long position,long count)
 {
 	char *data_p=malloc(count);
 	if ( data_p==NULL) 
@@ -69,11 +91,13 @@ char *Read_Data(long position,long count)
 		fprintf(stderr,"open file %s error \n",Read_File);
 		exit (OPEN_ERR);
 	}
-	fseek(fp,position,SEEK_SET);
+	seek(fp,position);
 	fread(data_p,1,count,fp);
 	fclose(fp);
 	return data_p;
 }
+
+
 
 /* open the device file for save date */
 void Save_Data(unsigned char (*data)[] ,long count)
@@ -92,7 +116,7 @@ void Save_Data(unsigned char (*data)[] ,long count)
 /* Read section data*/
 char *Read_S(long position)
 {
-	return Read_Data(position*512,512);
+	return Read_Data(position*512ll,512);
 }
 
 /*  print the data  */ 
@@ -139,10 +163,11 @@ char *Read_DBR(struct PCT pt)
 		EXTEND_POSITION=p;
 	else
 		p+=EXTEND_POSITION;
+		
 	result=Read_S(p);
 #ifdef DEBUG
 	print_date(result,512);
-	printf("===Read S end\n",p);
+	printf("===Read S %ld end\n",p);
 #endif
 	return result;
 }

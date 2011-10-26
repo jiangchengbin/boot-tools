@@ -23,7 +23,7 @@ extern char *Read_DBR(struct PCT pt);
 extern struct PCT Read_PT(char *data);
 extern void Print_DPT(struct DPT dpt);
 
-extern char *Read_Data(long position,long count);
+extern char *Read_Data(long long position,long count);
 char *Read_S(long position);
 extern void Save_Data(unsigned char (*data)[] ,long count);
 
