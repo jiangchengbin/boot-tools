@@ -156,14 +156,13 @@ char *Read_DBR(struct PCT pt)
 {
 	char *result;
 	long p=pt.before_s;
+
+	if ( EXTEND_POSITION == 0 ) EXTEND_POSITION=p;
+	else	p+=EXTEND_POSITION;
+
 #ifdef DEBUG
 	printf("===Will Read S %ld\n",p);
 #endif
-	if ( EXTEND_POSITION == 0 )
-		EXTEND_POSITION=p;
-	else
-		p+=EXTEND_POSITION;
-		
 	result=Read_S(p);
 #ifdef DEBUG
 	print_date(result,512);

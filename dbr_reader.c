@@ -26,9 +26,7 @@ int Read_Next_PT_Ex(char *data)
 	printf("Read S DPT data\n");
 	print_date(data,64);
 #endif
-
-	if ( result[0] == 0 && result[1] == 0 && result[2] == 0) return 0;
-	else return -1;
+	return 0;
 }
 
 /*	find next PCT from a DPT data */
